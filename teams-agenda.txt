@@ -1,0 +1,33 @@
+=== COPY AND PASTE INTO MICROSOFT TEAMS ===
+
+📰 **Cloud News - December 2024**
+
+Welcome to this month's newsletter! Here's what's inside:
+
+📊 **Monthly Highlights**
+• 1 articles from our community
+• 1 different categories
+• 1 contributors
+
+---
+
+**📋 Table of Contents**
+
+
+**Article**
+⚪ [[NEWSLETTER] -test](https://github.com/hornmichi/Cloud-News/releases/latest#newsletter--test) - by hornmichi
+
+
+---
+
+**📝 Want to contribute?**
+Submit content for next month's newsletter: [Submit Here](https://github.com/hornmichi/Cloud-News/issues)
+
+**📧 Questions?**
+Contact us: newsletter@hornmichi.com
+
+---
+*This newsletter is automatically generated from community contributions.*
+
+
+=== END OF COPY-PASTE CONTENT ===

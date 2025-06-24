@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud News - December 2024</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            line-height: 1.6; 
+            color: #333; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+            padding: 40px; 
+            text-align: center; 
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .monthly-info {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .content-area {
+            padding: 40px;
+        }
+        .article { 
+            margin-bottom: 40px; 
+            padding: 25px; 
+            border-left: 4px solid #667eea; 
+            background: #f8f9fa; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            scroll-margin-top: 20px;
+        }
+        .article h2 { 
+            color: #667eea; 
+            margin-bottom: 15px; 
+            font-size: 1.5rem;
+        }
+        .article .meta { 
+            color: #666; 
+            font-size: 0.9em; 
+            margin-bottom: 15px; 
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .article .summary { 
+            font-style: italic; 
+            color: #555; 
+            margin-bottom: 20px; 
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+        }
+        .category-badge { 
+            display: inline-block; 
+            background: #667eea; 
+            color: white; 
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            font-size: 0.8em; 
+            font-weight: 600;
+        }
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: 600;
+        }
+        .priority-urgent { background: #e74c3c; color: white; }
+        .priority-high { background: #f39c12; color: white; }
+        .priority-normal { background: #95a5a6; color: white; }
+        .footer { 
+            text-align: center; 
+            margin-top: 40px; 
+            padding: 30px; 
+            background: #f8f9fa; 
+            border-top: 1px solid #e9ecef;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .image {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .monthly-stats {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        .stat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .header { padding: 30px 20px; }
+            .header h1 { font-size: 2rem; }
+            .content-area { padding: 30px 20px; }
+            .article { padding: 20px; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📰 Cloud News</h1>
+            <p>December 2024</p>
+            <div class="monthly-info">
+                <strong>Monthly Newsletter</strong><br>
+                1 articles • 1 categories
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="monthly-stats">
+                <h3>📊 This Month's Highlights</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Articles</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Categories</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Contributors</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">0</div>
+                        <div class="stat-label">Urgent Items</div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="article" id="newsletter--test">
+                <h2>[NEWSLETTER] -test</h2>
+                <div class="meta">
+                    <span class="category-badge">Article</span>
+                    <span class="priority-badge priority-normal">Normal</span>
+                    <span>By hornmichi</span>
+                </div>
+                <div class="summary">### Article Title
+
+test
+
+### Summary
+
+test
+
+### Content Category
+
+Article
+
+### Full Content
+
+```markdown
+ztsfösdjkfädsfijsdälkfjsdläkfj
+```
+
+### Author Name
+
+michael horn
+
+### Image (Optional)
+
+_No re...</div>
+                <div class="content">### Article Title
+
+test
+
+### Summary
+
+test
+
+### Content Category
+
+Article
+
+### Full Content
+
+```markdown
+ztsfösdjkfädsfijsdälkfjsdläkfj
+```
+
+### Author Name
+
+michael horn
+
+### Image (Optional)
+
+_No response_
+
+### Priority
+
+None
+
+### Additional Notes (Optional)
+
+```markdown
+
+```</div>
+                
+            </div>
+            
+        </div>
+
+        <div class="footer">
+            <p>Want to contribute? <a href="https://github.com/hornmichi/Cloud-News/issues">Submit content here</a></p>
+            <p>📧 <a href="mailto:newsletter@hornmichi.com">newsletter@hornmichi.com</a></p>
+            <p style="margin-top: 20px; font-size: 0.9em; color: #666;">© 2024 Cloud News. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
