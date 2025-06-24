@@ -7,13 +7,13 @@ A self-service newsletter platform that allows both technical and non-technical 
 ### For Non-Technical Users
 
 1. **Submit Content via GitHub Issues** (Recommended)
-   - Go to the [Issues tab](https://github.com/your-org/cloud-news/issues)
+   - Go to the [Issues tab](https://github.com/hornmichi/cloud-news/issues)
    - Click "New Issue"
    - Select "Newsletter Content Submission" template
    - Fill out the form and submit
 
 2. **Submit Content via Web Form**
-   - Visit our [Newsletter Submission Form](https://your-org.github.io/cloud-news/)
+   - Visit our [Newsletter Submission Form](https://hornmichi.github.io/cloud-news/)
    - Fill out the form
    - Submit - it automatically creates a GitHub issue
 

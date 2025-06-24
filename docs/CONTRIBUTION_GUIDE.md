@@ -14,7 +14,7 @@ Welcome to Cloud News! This guide will help you add content to our newsletter wi
 
 ### Option 2: Using the Web Form
 
-1. Visit our [Newsletter Submission Form](https://your-org.github.io/cloud-news/)
+1. Visit our [Newsletter Submission Form](https://hornmichi.github.io/cloud-news/)
 2. Fill out the form with your content
 3. Submit - it will automatically create a GitHub issue
 
@@ -137,9 +137,9 @@ Regular progress updates on ongoing projects or initiatives. Keep stakeholders i
 
 ## 📞 Contact Information
 
-- **Newsletter Team**: newsletter@yourcompany.com
-- **Technical Issues**: tech-support@yourcompany.com
-- **Content Questions**: content@yourcompany.com
+- **Newsletter Team**: newsletter@hornmichi.com
+- **Technical Issues**: tech-support@hornmichi.com
+- **Content Questions**: content@hornmichi.com
 
 ---
 

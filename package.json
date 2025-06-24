@@ -14,14 +14,14 @@
     "github",
     "automation"
   ],
-  "author": "Your Organization",
+  "author": "hornmichi",
   "license": "MIT",
   "devDependencies": {
     "http-server": "^14.1.1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/cloud-news.git"
+    "url": "https://github.com/hornmichi/cloud-news.git"
   },
-  "homepage": "https://your-org.github.io/cloud-news/"
+  "homepage": "https://hornmichi.github.io/cloud-news/"
 }
