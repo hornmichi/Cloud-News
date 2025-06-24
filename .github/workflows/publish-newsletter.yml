@@ -1,0 +1,79 @@
+name: Publish Newsletter
+
+on:
+  repository_dispatch:
+    types: [publish-newsletter]
+  workflow_dispatch:
+    inputs:
+      selected_articles:
+        description: 'Comma-separated list of article issue numbers'
+        required: true
+        type: string
+      newsletter_date:
+        description: 'Newsletter date (e.g., January 2024)'
+        required: true
+        type: string
+        default: 'January 2024'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install jinja2 markdown PyGithub python-dateutil requests
+
+      - name: Generate Newsletter
+        id: generate
+        run: |
+          python scripts/generate_newsletter_from_selected.py "${{ github.event.inputs.selected_articles || github.event.client_payload.selected_articles }}" "${{ github.event.inputs.newsletter_date || github.event.client_payload.newsletter_date }}"
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: newsletter-${{ github.run_number }}
+          release_name: Newsletter - ${{ github.event.inputs.newsletter_date || github.event.client_payload.newsletter_date }}
+          body: |
+            📰 **Cloud News Newsletter**
+            
+            Generated on: ${{ github.event.inputs.newsletter_date || github.event.client_payload.newsletter_date }}
+            
+            **Files included:**
+            - `newsletter.html` - Complete newsletter
+            - `teams-agenda.txt` - Teams agenda with clickable links
+            
+            **Download the newsletter:** [newsletter.html](https://github.com/${{ github.repository }}/releases/download/newsletter-${{ github.run_number }}/newsletter.html)
+            
+            **Teams agenda:** Copy content from `teams-agenda.txt` and paste into Microsoft Teams
+          draft: false
+          prerelease: false
+
+      - name: Upload Newsletter Files
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./newsletter.html
+          asset_name: newsletter.html
+          asset_content_type: text/html
+
+      - name: Upload Teams Agenda
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./teams-agenda.txt
+          asset_name: teams-agenda.txt
+          asset_content_type: text/plain
