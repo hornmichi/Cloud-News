@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud News Editor Dashboard</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 32px 40px 40px 40px;
+        }
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .desc {
+            text-align: center;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        .articles-list {
+            margin-bottom: 30px;
+        }
+        .article-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            padding: 18px 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        .article-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .article-meta {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+        }
+        .article-summary {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .edit-btn, .select-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 7px 16px;
+            margin-right: 10px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .edit-btn:hover, .select-btn:hover {
+            background: #4b5fc1;
+        }
+        .selected {
+            background: #e0e7ff !important;
+        }
+        .publish-btn {
+            display: block;
+            width: 100%;
+            background: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .publish-btn:disabled {
+            background: #b6e4c7;
+            cursor: not-allowed;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #888;
+            font-size: 0.95em;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Cloud News Editor Dashboard</h1>
+        <div class="desc">
+            Review, select, and publish newsletter articles. No coding required!
+        </div>
+        <div id="status"></div>
+        <div class="articles-list" id="articlesList">
+            <div>Loading articles...</div>
+        </div>
+        <button class="publish-btn" id="publishBtn" disabled>Publish Newsletter</button>
+        <div class="footer">
+            Need help? <a href="https://github.com/hornmichi/Cloud-News/issues" target="_blank">Contact the team</a>.<br>
+            &copy; 2024 Cloud News
+        </div>
+    </div>
+    <script>
+    // --- CONFIG ---
+    const GITHUB_REPO = 'hornmichi/Cloud-News';
+    const GITHUB_API = 'https://api.github.com';
+    // Optionally, you can use a GitHub token for private repos or higher rate limits
+    const GITHUB_TOKEN = '';
+
+    // --- UI State ---
+    let articles = [];
+    let selectedArticleIndexes = [];
+
+    // --- Fetch Articles from GitHub Issues ---
+    async function fetchArticles() {
+        const url = `${GITHUB_API}/repos/${GITHUB_REPO}/issues?labels=newsletter,approved&state=open&per_page=100`;
+        const headers = GITHUB_TOKEN ? { 'Authorization': `token ${GITHUB_TOKEN}` } : {};
+        const res = await fetch(url, { headers });
+        if (!res.ok) {
+            document.getElementById('articlesList').innerHTML = '<div style="color:red">Failed to load articles. Please check your connection or contact support.</div>';
+            return;
+        }
+        const issues = await res.json();
+        articles = issues.map(issue => ({
+            id: issue.id,
+            number: issue.number,
+            title: issue.title,
+            summary: issue.body.split('\n').slice(0,2).join(' '),
+            author: issue.user.login,
+            url: issue.html_url,
+            full: issue.body
+        }));
+        renderArticles();
+    }
+
+    // --- Render Articles List ---
+    function renderArticles() {
+        const list = document.getElementById('articlesList');
+        if (!articles.length) {
+            list.innerHTML = '<div>No articles found. Make sure submissions are labeled "newsletter" and "approved".</div>';
+            document.getElementById('publishBtn').disabled = true;
+            return;
+        }
+        list.innerHTML = '';
+        articles.forEach((article, idx) => {
+            const card = document.createElement('div');
+            card.className = 'article-card' + (selectedArticleIndexes.includes(idx) ? ' selected' : '');
+            card.innerHTML = `
+                <div class="article-title">${article.title}</div>
+                <div class="article-meta">By ${article.author} | <a href="${article.url}" target="_blank">View on GitHub</a></div>
+                <div class="article-summary">${article.summary}</div>
+                <button class="select-btn" onclick="toggleSelect(${idx})">${selectedArticleIndexes.includes(idx) ? 'Deselect' : 'Select'}</button>
+                <button class="edit-btn" onclick="editArticle(${idx})">Edit</button>
+            `;
+            list.appendChild(card);
+        });
+        document.getElementById('publishBtn').disabled = selectedArticleIndexes.length === 0;
+    }
+
+    // --- Select/Deselect Articles ---
+    window.toggleSelect = function(idx) {
+        if (selectedArticleIndexes.includes(idx)) {
+            selectedArticleIndexes = selectedArticleIndexes.filter(i => i !== idx);
+        } else {
+            selectedArticleIndexes.push(idx);
+        }
+        renderArticles();
+    }
+
+    // --- Edit Article (Simple Prompt) ---
+    window.editArticle = function(idx) {
+        const newBody = prompt('Edit article content:', articles[idx].full);
+        if (newBody !== null) {
+            articles[idx].full = newBody;
+            articles[idx].summary = newBody.split('\n').slice(0,2).join(' ');
+            // Optionally, update on GitHub via API (requires token and PATCH)
+        }
+        renderArticles();
+    }
+
+    // --- Publish Newsletter ---
+    document.getElementById('publishBtn').onclick = async function() {
+        const selectedArticles = selectedArticleIndexes.map(i => articles[i]);
+        document.getElementById('status').innerHTML = '<div style="color:#667eea">Publishing newsletter...</div>';
+        // Option 1: Trigger a GitHub Action via repository_dispatch event
+        // Option 2: Create a new issue or file with the selected articles
+        // For demo, just show a summary
+        setTimeout(() => {
+            document.getElementById('status').innerHTML = `<div style='color:green'>Newsletter published!<br>Included articles:<ul>${selectedArticles.map(a => `<li>${a.title}</li>`).join('')}</ul></div>`;
+        }, 1200);
+        // TODO: Integrate with GitHub Actions or backend to actually publish
+    };
+
+    // --- Init ---
+    fetchArticles();
+    </script>
+</body>
+</html>
