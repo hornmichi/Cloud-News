@@ -1,0 +1,42 @@
+=== COPY AND PASTE INTO MICROSOFT TEAMS ===
+
+📰 **Cloud News - December 2024**
+
+Welcome to this month's newsletter! Here's what's inside:
+
+📊 **Monthly Highlights**
+• 4 articles from our community
+• 4 different categories
+• 4 contributors
+
+---
+
+**📋 Table of Contents**
+
+
+**Announcement**
+🟡 [New Cloud Security Features Released](https://github.com/hornmichi/Cloud-News/releases/latest#new-cloud-security-features-released) - by Sarah Johnson - Product Manager
+
+**Industry News**
+🟡 [Industry Update: Major Cloud Provider Price Changes](https://github.com/hornmichi/Cloud-News/releases/latest#industry-update-major-cloud-provider-price-changes) - by Lisa Wang - Industry Analyst
+
+**Spotlight**
+⚪ [Team Spotlight: Meet Our New DevOps Engineer](https://github.com/hornmichi/Cloud-News/releases/latest#team-spotlight-meet-our-new-devops-engineer) - by Maria Rodriguez - HR Manager
+
+**Tips & Tricks**
+⚪ [5 Essential Tips for Cloud Cost Optimization](https://github.com/hornmichi/Cloud-News/releases/latest#5-essential-tips-for-cloud-cost-optimization) - by David Kim - Cloud Architect
+
+
+---
+
+**📝 Want to contribute?**
+Submit content for next month's newsletter: [Submit Here](https://github.com/hornmichi/Cloud-News/issues)
+
+**📧 Questions?**
+Contact us: newsletter@hornmichi.com
+
+---
+*This newsletter is automatically generated from community contributions.*
+
+
+=== END OF COPY-PASTE CONTENT ===
