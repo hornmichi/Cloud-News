@@ -1,0 +1,93 @@
+name: Newsletter Content Submission
+description: Submit content for the newsletter
+title: "[NEWSLETTER] "
+labels: ["newsletter", "content"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for contributing to our newsletter! Please fill out the form below with your content.
+        
+        **Need help?** Check out our [contribution guide](docs/CONTRIBUTION_GUIDE.md) for detailed instructions.
+
+  - type: input
+    id: title
+    attributes:
+      label: Article Title
+      description: Enter a clear, engaging headline (max 60 characters)
+      placeholder: "Your engaging headline here"
+    validations:
+      required: true
+      maxLength: 60
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Brief 2-3 sentence summary of your content
+      placeholder: "Provide a brief overview of what this article/announcement covers..."
+    validations:
+      required: true
+      maxLength: 200
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Content Category
+      description: Select the most appropriate category for your content
+      options:
+        - Article
+        - Announcement
+        - Spotlight
+        - Tips & Tricks
+        - Industry News
+        - Event
+        - Update
+    validations:
+      required: true
+
+  - type: textarea
+    id: content
+    attributes:
+      label: Full Content
+      description: Your complete article, announcement, or content (300-500 words recommended)
+      placeholder: "Write your full content here..."
+      render: markdown
+    validations:
+      required: true
+      maxLength: 2000
+
+  - type: input
+    id: author
+    attributes:
+      label: Author Name
+      description: Your name and role (e.g., "John Doe - Marketing Manager")
+      placeholder: "Your Name - Your Role"
+    validations:
+      required: true
+
+  - type: input
+    id: image
+    attributes:
+      label: Image (Optional)
+      description: URL to an image or description of what image you'd like included
+      placeholder: "https://example.com/image.jpg or 'Team photo from last week's event'"
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How urgent is this content?
+      options:
+        - Normal
+        - High
+        - Urgent
+
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: Additional Notes (Optional)
+      description: Any additional information, special formatting requests, or notes for the newsletter team
+      placeholder: "Any special requests or additional context..."
+      render: markdown

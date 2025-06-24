@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud News - Newsletter Submission</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .char-count {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .help-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📰 Cloud News</h1>
+            <p>Submit your content for our newsletter</p>
+        </div>
+
+        <div class="form-container">
+            <div class="success-message" id="successMessage">
+                <strong>✅ Success!</strong> Your content has been submitted successfully. We'll review it and get back to you soon.
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                <strong>❌ Error!</strong> <span id="errorText"></span>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Submitting your content...</p>
+            </div>
+
+            <form id="newsletterForm">
+                <div class="form-group">
+                    <label for="title">Article Title <span class="required">*</span></label>
+                    <input type="text" id="title" name="title" required maxlength="60" placeholder="Your engaging headline here">
+                    <div class="char-count"><span id="titleCount">0</span>/60</div>
+                    <div class="help-text">Keep it clear and engaging (max 60 characters)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="summary">Summary <span class="required">*</span></label>
+                    <textarea id="summary" name="summary" required maxlength="200" placeholder="Provide a brief overview of what this article/announcement covers..."></textarea>
+                    <div class="char-count"><span id="summaryCount">0</span>/200</div>
+                    <div class="help-text">Brief 2-3 sentence summary of your content</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Content Category <span class="required">*</span></label>
+                    <select id="category" name="category" required>
+                        <option value="">Select a category</option>
+                        <option value="Article">Article</option>
+                        <option value="Announcement">Announcement</option>
+                        <option value="Spotlight">Spotlight</option>
+                        <option value="Tips & Tricks">Tips & Tricks</option>
+                        <option value="Industry News">Industry News</option>
+                        <option value="Event">Event</option>
+                        <option value="Update">Update</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="content">Full Content <span class="required">*</span></label>
+                    <textarea id="content" name="content" required maxlength="2000" placeholder="Write your full content here..."></textarea>
+                    <div class="char-count"><span id="contentCount">0</span>/2000</div>
+                    <div class="help-text">Your complete article or announcement (300-500 words recommended)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="author">Author Name <span class="required">*</span></label>
+                    <input type="text" id="author" name="author" required placeholder="Your Name - Your Role">
+                    <div class="help-text">Example: "John Doe - Marketing Manager"</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Image (Optional)</label>
+                    <input type="url" id="image" name="image" placeholder="https://example.com/image.jpg or 'Team photo from last week's event'">
+                    <div class="help-text">URL to an image or description of what image you'd like included</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="priority">Priority</label>
+                    <select id="priority" name="priority">
+                        <option value="Normal">Normal</option>
+                        <option value="High">High</option>
+                        <option value="Urgent">Urgent</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="additionalNotes">Additional Notes (Optional)</label>
+                    <textarea id="additionalNotes" name="additionalNotes" placeholder="Any special requests or additional context..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    📤 Submit Content
+                </button>
+            </form>
+        </div>
+
+        <div class="footer">
+            <p>Need help? Check out our <a href="https://github.com/your-org/cloud-news/blob/main/docs/CONTRIBUTION_GUIDE.md" target="_blank">contribution guide</a> or <a href="https://github.com/your-org/cloud-news/issues" target="_blank">contact us</a>.</p>
+        </div>
+    </div>
+
+    <script>
+        // Character counters
+        function updateCharCount(inputId, countId, maxLength) {
+            const input = document.getElementById(inputId);
+            const count = document.getElementById(countId);
+            
+            input.addEventListener('input', function() {
+                const currentLength = this.value.length;
+                count.textContent = currentLength;
+                
+                if (currentLength > maxLength * 0.9) {
+                    count.style.color = '#e74c3c';
+                } else {
+                    count.style.color = '#666';
+                }
+            });
+        }
+
+        updateCharCount('title', 'titleCount', 60);
+        updateCharCount('summary', 'summaryCount', 200);
+        updateCharCount('content', 'contentCount', 2000);
+
+        // Form submission
+        document.getElementById('newsletterForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            loading.style.display = 'block';
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                // In a real implementation, this would create a GitHub issue
+                // For now, we'll simulate the process
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Simulate success
+                loading.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // Reset form
+                this.reset();
+                document.querySelectorAll('.char-count span').forEach(span => {
+                    span.textContent = '0';
+                });
+                
+                // Scroll to success message
+                successMessage.scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                loading.style.display = 'none';
+                document.getElementById('errorText').textContent = 'Failed to submit content. Please try again or contact support.';
+                errorMessage.style.display = 'block';
+                errorMessage.scrollIntoView({ behavior: 'smooth' });
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Add some interactivity
+        document.querySelectorAll('input, textarea, select').forEach(element => {
+            element.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            element.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
