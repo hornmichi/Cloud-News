@@ -44,8 +44,8 @@ A self-service newsletter platform that allows both technical and non-technical 
 
 ## 📅 Newsletter Schedule
 
-- **Publication**: Every Friday
-- **Submission Deadline**: Wednesday 5 PM
+- **Publication**: Every month
+- **Submission Deadline**: Last day of the month
 - **Review Period**: 2-3 business days
 
 ## 🛠️ For Newsletter Editors

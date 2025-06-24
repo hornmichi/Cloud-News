@@ -65,7 +65,7 @@ Image: https://example.com/security-features.png
 ## 📋 Submission Process
 
 1. **Submit**: Create an issue or use the web form
-2. **Review**: Our team will review your content within 2-3 business days
+2. **Review**: Our team will review your content within 1 week
 3. **Feedback**: We may request edits or clarifications
 4. **Approval**: Once approved, your content will be included in the next newsletter
 5. **Publication**: You'll be notified when the newsletter is published
@@ -91,9 +91,9 @@ Image: https://example.com/security-features.png
 
 ## 📅 Newsletter Schedule
 
-- **Publication**: Every Friday
-- **Submission Deadline**: Wednesday 5 PM
-- **Review Period**: 2-3 business days
+- **Publication**: Every month
+- **Submission Deadline**: Last day of the month
+- **Review Period**: 1 week
 - **Content Planning**: Monthly content calendar available
 
 ## 🆘 Need Help?

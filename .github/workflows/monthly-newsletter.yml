@@ -1,0 +1,149 @@
+name: Monthly Newsletter Automation
+
+on:
+  schedule:
+    # Run on the 1st of every month at 9 AM UTC to collect content
+    - cron: '0 9 1 * *'
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to perform'
+        required: true
+        default: 'collect-content'
+        type: choice
+        options:
+        - collect-content
+        - generate-newsletter
+        - publish-newsletter
+        - send-notifications
+
+jobs:
+  collect-content:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'collect-content')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install PyGithub python-dateutil
+
+      - name: Collect newsletter content
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/collect_monthly_content.py
+
+      - name: Create content summary
+        run: |
+          python scripts/create_monthly_summary.py
+
+  generate-newsletter:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'generate-newsletter'
+    needs: collect-content
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install jinja2 markdown
+
+      - name: Generate monthly newsletter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/generate_monthly_newsletter.py
+
+      - name: Create newsletter issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const newsletterContent = fs.readFileSync('monthly-newsletter-draft.md', 'utf8');
+            
+            const currentDate = new Date();
+            const monthYear = currentDate.toLocaleDateString('en-US', { 
+              month: 'long', 
+              year: 'numeric' 
+            });
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `📰 Monthly Newsletter Draft - ${monthYear}`,
+              body: newsletterContent,
+              labels: ['newsletter', 'draft', 'monthly']
+            });
+
+  publish-newsletter:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'publish-newsletter')
+    needs: [collect-content, generate-newsletter]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install jinja2 markdown requests
+
+      - name: Publish monthly newsletter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          EMAIL_API_KEY: ${{ secrets.EMAIL_API_KEY }}
+        run: |
+          python scripts/publish_monthly_newsletter.py
+
+      - name: Create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: monthly-$(date +%Y-%m)
+          release_name: Monthly Newsletter - $(date +%B %Y)
+          body_path: monthly-newsletter-published.md
+          draft: false
+          prerelease: false
+
+  send-notifications:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'send-notifications'
+    needs: publish-newsletter
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Send notifications
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          EMAIL_API_KEY: ${{ secrets.EMAIL_API_KEY }}
+        run: |
+          python scripts/send_monthly_notifications.py
